@@ -1,0 +1,33 @@
+name: 'PR Review Agent'
+description: 'LLM-powered PR security & code review — analyzes diffs and posts findings as PR comments'
+author: 'NVIDIA DevInfra'
+
+inputs:
+  inference-hub-api-key:
+    description: 'NVIDIA Inference Hub API key'
+    required: true
+  inference-hub-model:
+    description: 'Model to use for analysis'
+    default: 'aws/anthropic/bedrock-claude-opus-4-6'
+  review-type:
+    description: 'Type of review: security, quality, or both'
+    default: 'both'
+  custom-instructions:
+    description: 'Additional instructions for the reviewer (repo-specific context)'
+    default: ''
+  max-comments:
+    description: 'Maximum number of inline comments to post'
+    default: '15'
+  github-token:
+    description: 'GitHub token for posting PR comments'
+    default: ${{ github.token }}
+
+outputs:
+  findings-count:
+    description: 'Total number of findings'
+  summary:
+    description: 'Brief summary of the review'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
