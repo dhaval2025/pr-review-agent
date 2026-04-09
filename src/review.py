@@ -1,4 +1,4 @@
-"""Entrypoint for the PR Review Agent GitHub Action."""
+"""Entrypoint for the Security Review Agent GitHub Action."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ import requests
 
 from .prompts import build_review_prompt
 
-_PREFIX = "[pr-review-agent]"
+_PREFIX = "[security-review-agent]"
 
 
 def write_output(name: str, value: str) -> None:
@@ -172,7 +172,7 @@ def post_inline_comments(
 
     payload = {
         "commit_id": commit_sha,
-        "body": "\U0001f916 **PR Review Agent** — Automated code review powered by NVIDIA Inference Hub + Claude",
+        "body": "\U0001f916 **Security Review Agent** — Automated code review powered by NVIDIA Inference Hub + Claude",
         "event": "COMMENT",
         "comments": comments,
     }
@@ -193,7 +193,7 @@ def post_inline_comments(
 def format_summary_comment(findings: list[dict], summary: str) -> str:
     """Format findings into a markdown PR comment."""
     lines = [
-        "## \U0001f916 PR Review Agent\n",
+        "## \U0001f916 Security Review Agent\n",
         f"> {summary}\n",
     ]
 

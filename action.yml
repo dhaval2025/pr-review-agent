@@ -1,5 +1,5 @@
-name: 'PR Review Agent'
-description: 'LLM-powered PR security & code review — analyzes diffs and posts findings as PR comments'
+name: 'Security Review Agent'
+description: 'LLM-powered security review — analyzes PR diffs and posts findings as PR comments'
 author: 'NVIDIA DevInfra'
 
 inputs:
