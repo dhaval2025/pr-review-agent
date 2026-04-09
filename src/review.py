@@ -31,19 +31,29 @@ def get_pr_diff() -> str:
     Uses GITHUB_BASE_REF to diff against the target branch.
     Falls back to diffing against origin/main.
     """
+    workspace = os.environ.get("GITHUB_WORKSPACE", "/github/workspace")
     base_ref = os.environ.get("GITHUB_BASE_REF", "main")
+
+    # Mark workspace as safe for git (Docker container runs as root)
+    subprocess.run(
+        ["git", "config", "--global", "--add", "safe.directory", workspace],
+        capture_output=True,
+        text=True,
+    )
 
     # Fetch the base branch so we can diff against it
     subprocess.run(
         ["git", "fetch", "origin", base_ref, "--depth=1"],
         capture_output=True,
         text=True,
+        cwd=workspace,
     )
 
     result = subprocess.run(
         ["git", "diff", f"origin/{base_ref}...HEAD", "--unified=3"],
         capture_output=True,
         text=True,
+        cwd=workspace,
     )
 
     if result.returncode != 0:
@@ -53,6 +63,7 @@ def get_pr_diff() -> str:
             ["git", "diff", "HEAD~1", "--unified=3"],
             capture_output=True,
             text=True,
+            cwd=workspace,
         )
 
     return result.stdout
